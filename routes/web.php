@@ -85,10 +85,10 @@ Route::get('rechnung/edit/{id}', 'App\Http\Controllers\RechnungController@edit')
 Route::get('rechnung/edit/{id}/delete', 'App\Http\Controllers\RechnungController@delete');
 Route::get('rechnung/payList/{company}', 'App\Http\Controllers\RechnungController@payList');
 Route::get('rechnung/pay/{rechnungs_id}', 'App\Http\Controllers\RechnungController@pay');
-Route::get('dekra/new_customer/{id}/delete', 'HomeController@customerDelete');
-Route::get('/dekra/new_customer', 'DriverController@newCustomer');
-Route::get('/dekra/new_customer/{id}', 'DriverController@editCustomer');
-Route::post('/dekra/save_customer', 'DriverController@saveCustomer');
+Route::get('dekra/new_customer/{id}/delete', 'App\Http\Controllers\HomeController@customerDelete');
+Route::get('/dekra/new_customer', 'App\Http\Controllers\DriverController@newCustomer');
+Route::get('/dekra/new_customer/{id}', 'App\Http\Controllers\DriverController@editCustomer');
+Route::post('/dekra/save_customer', 'App\Http\Controllers\DriverController@saveCustomer');
 Route::get('/uploadfile','UploadFileController@index') ;
 Route::post('/uploadfile','UploadFileController@showUploadFile');
 Route::get('/config','HomeController@config');
