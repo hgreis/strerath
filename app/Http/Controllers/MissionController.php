@@ -23,10 +23,6 @@ class MissionController extends Controller
             ->orderBy('zielDatum', 'desc')
             ->get();    
             foreach ($missions as $mission) {
-                if($mission->bill_id != null)    {
-                    $mission->bill_number = Bill::find($mission->bill_id)->number;
-                    $mission->bill_price = Bill::find($mission->bill_id)->priceGross;
-                }
                 if($mission->customer == null) {
                     $mission->customer = new Customer;
                 }
@@ -123,12 +119,16 @@ class MissionController extends Controller
         return response()->file(public_path('Rechnungen/Strerath Transporte RE-'.$bill->number.'.pdf'));
     }
 
+
+
     public function listInvoices($id) {
         $bills = Bill::where('company', $id)
-                    ->orderBy('id','desc')
+                    ->orderBy('id', 'desc')
+                    ->limit(1000)
                     ->get();
         return view('pages.invoices', compact('bills', 'id'));
     }
+
 
     public function paidInvoices($id)   {
         $bills = Bill::where('company', $id)
@@ -524,12 +524,15 @@ class MissionController extends Controller
         return redirect('/missionsPayDriver/'.$mission->company);
     }
 
+
     public function calendar() {
-        $missions = Mission::all()
-                    ->sortByDesc('startDatum')
+        $missions = Mission::orderBy('startDatum', 'desc')
+                    ->limit(3000)
+                    ->get()
                     ->groupBy('startDatum');
         return view('pages.calendar', compact('missions'));
     }
+
 
     public function mission_delete($id) {
         $mission = Mission::find($id);
