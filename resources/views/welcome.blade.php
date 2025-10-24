@@ -1,6 +1,6 @@
 @extends('layouts.main')
 @section('content')
-    <h1>Senex-Solutions  &rArr; NEWS</h1>
+    <h2>Senex-Solutions  &rArr; NEWS</h2>
     <div>
       <table class="table">
             <tr>

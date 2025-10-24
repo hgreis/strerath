@@ -5,32 +5,48 @@
 	<table style="width: 100%">
 		<tr>
 			<td style="padding-right: 10px">
-				<label>Fahrer-Name: </label>
-				<input type="text" class="form-control" name="name" value="<?php echo e($drivers->driver->name); ?>" required>
-				<input type="hidden" name="id" value="<?php echo e($drivers->driver->id); ?>">
-				<label>Telefon:</label>
-				<input type="text" name="phone" class="form-control" value="<?php echo e($drivers->driver->phone); ?>">
-				<label>Steuer-Nummer:</label>
-				<input type="text" name="steuernr" class="form-control" value="<?php echo e($drivers->driver->steuernr); ?>">
-				<label>KFZ-Kennzeichen:</label>
-				<input type="text" 
-						name="number_plate" 
-						class="form-control" 
-						value="<?php echo e($drivers->driver->number_plate); ?>">
+				<div class="form-group">
+					<label>Fahrer-Name: </label>
+					<input type="text" class="form-control" name="name" value="<?php echo e($drivers->driver->name); ?>" required>
+					<input type="hidden" name="id" value="<?php echo e($drivers->driver->id); ?>">
+				</div>	
+				<div class="form-group">
+					<label>Telefon:</label>
+					<input type="text" name="phone" class="form-control" value="<?php echo e($drivers->driver->phone); ?>">
+				</div>
+				<div class="form-group">
+					<label>Steuer-Nummer:</label>
+					<input type="text" name="steuernr" class="form-control" value="<?php echo e($drivers->driver->steuernr); ?>">
+				</div>				
+				<div class="form-group">
+					<label>KFZ-Kennzeichen:</label>
+						<input type="text" 
+							name="number_plate" 
+							class="form-control" 
+							value="<?php echo e($drivers->driver->number_plate); ?>">
+				</div>
 			</td>
 			<td>
-				<label>Unternehmer:</label>
-				<input type="text" 
+				<div class="form-group">
+					<label>Unternehmer:</label>
+					<input type="text" 
 						name="contractor" 
 						class="form-control" 
 						value="<?php echo e($drivers->driver->contractor); ?>">	
-				<label>Strasse:</label>
-				<input type="text" name="street" class="form-control" value="<?php echo e($drivers->driver->street); ?>">
-				<label>Stadt:</label>
-				<input type="text" name="city" class="form-control" value="<?php echo e($drivers->driver->city); ?>" >
-				<label>Emailadresse:</label>
-				<input type="text" name="email" class="form-control" value="<?php echo e($drivers->driver->email); ?>">
-			</td>
+				</div>
+				<div class="form-group">
+					<label>Strasse:</label>
+					<input type="text" name="street" class="form-control" value="<?php echo e($drivers->driver->street); ?>">
+				</div>
+				<div class="form-group">
+					<label>Stadt:</label>
+					<input type="text" name="city" class="form-control" value="<?php echo e($drivers->driver->city); ?>" >
+				</div>
+				<div class="form-group">
+					<label>Emailadresse:</label>
+					<input type="text" name="email" class="form-control" value="<?php echo e($drivers->driver->email); ?>">
+				</div>
+				</td>
 		</tr>
 	</table>
 	<input type="Submit" class="form-control" style="margin-top: 20px" name="submit" value="Speichern">
