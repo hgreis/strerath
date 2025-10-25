@@ -23,8 +23,8 @@ Auth::routes();
 
 Route::get('/home', 'App\Http\Controllers\HomeController@index');
 Route::get('/menu', 'App\Http\Controllers\HomeController@menu');
-Route::get('/menu_invoice', 'App\Http\Controllers\HomeController@menu_invoice');
-Route::get('/menu_config', 'App\Http\Controllers\HomeController@menu_config');
+Route::get('/menu_invoice',function () {return view('pages.menu_invoices');});
+Route::get('/menu_config', 'App\Http\Controllers\HomeController@menu_config');	
 Route::post('/mission/new', 'App\Http\Controllers\MissionController@mission_submit');
 Route::get('/mission/new', 'App\Http\Controllers\MissionController@mission_new');
 Route::get('/mission/new/{date}', 'App\Http\Controllers\MissionController@mission_newDate');

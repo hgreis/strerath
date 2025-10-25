@@ -21,12 +21,6 @@
 					<option value="<?php echo e($customer->kunde); ?> "><?php echo e($customer->kunde); ?></option>
 				<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 			</select>
-			<select name='date' class='form-control'>
-				<option value="">--- Datum auswählen ---</option>
-				<?php $__currentLoopData = $dates; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $date): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-					<option value="<?php echo e($date->zielDatum); ?> "><?php echo e($date->zielDatum); ?></option>
-				<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-			</select>
 			<input type="submit" name="submit" value="FILTERN" class="form-control">
 		</form>
 	</div>

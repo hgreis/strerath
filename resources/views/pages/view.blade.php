@@ -23,12 +23,6 @@
 					<option value="{{ $customer->kunde }} ">{{ $customer->kunde }}</option>
 				@endforeach
 			</select>
-			<select name='date' class='form-control'>
-				<option value="">--- Datum auswählen ---</option>
-				@foreach ($dates as $date)
-					<option value="{{ $date->zielDatum }} ">{{ $date->zielDatum }}</option>
-				@endforeach
-			</select>
 			<input type="submit" name="submit" value="FILTERN" class="form-control">
 		</form>
 	</div>

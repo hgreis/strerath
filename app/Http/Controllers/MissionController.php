@@ -23,8 +23,18 @@ class MissionController extends Controller
             ->orderBy('zielDatum', 'desc')
             ->get();    
             foreach ($missions as $mission) {
+                if($mission->bill_id != null)    {
+                    $bill = Bill::find($mission->bill_id);
+                    $mission->bill_number = $bill->number ?? "nix Rechnung";
+                    $mission->bill_price = $bill->priceGross ?? 0;
+                }
+                if($mission->driver == null) {
+                    $mission->driver = new Driver;
+                    $mission->driver->name = 'KEIN FAHRER ZUGEWIESEN';
+                }
                 if($mission->customer == null) {
                     $mission->customer = new Customer;
+                    $mission->customer->name = 'KEIN AUFTRAGGEBER ZUGEWIESEN';
                 }
             }
 
@@ -55,13 +65,10 @@ class MissionController extends Controller
         if ($request->driver != null) {
             $missions = $missions->where('fahrer', $request->driver);
         }
-        if ($request->date != null) {
-            $missions = $missions->where('zielDatum', $request->date);
-        }
         if ($request->contractor != null) {
             return 'Der Filter "Unternehmer" muss noch programmiert werden';
         }
-        return view('pages.view', compact('missions', 'dates', 'drivers', 'contractors', 'customers'));
+        return view('pages.view', compact('missions', 'drivers', 'contractors', 'customers'));
     }
 
     
@@ -429,7 +436,8 @@ class MissionController extends Controller
         }
         return view('pages.view', compact('missions', 'dates', 'drivers', 'contractors', 'customers'));    }
 
-    public function viewNoDeliveryNote(Request $request)  {
+    
+        public function viewNoDeliveryNote(Request $request)  {
         $missions = Mission::whereNull('bill_id')
             ->whereNull('deliveryNote')
             ->whereNull('bill_paid')
