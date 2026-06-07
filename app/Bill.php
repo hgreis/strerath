@@ -94,42 +94,42 @@ class Bill extends Model
 
         $this->applyTaxSettings($bill, $customer);
 
-        $pdf = new PDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-        $pdf->SetTitle('Rechnung');
-        $pdf->SetMargins(20, 30, 20, 20);
+        // Use facade statically
+        PDF::SetTitle('Rechnung');
+        PDF::SetMargins(20, 30, 20, 20);
 
         // Set header
-        $this->setHeaderCallback($pdf, $company);
+        $this->setHeaderCallback($company);
 
         // Set footer
-        $this->setFooterCallback($pdf);
+        $this->setFooterCallback();
 
-        $pdf->AddPage();
+        PDF::AddPage();
 
         // Address field
-        $this->renderAddressField($pdf, $company, $customer);
+        $this->renderAddressField($company, $customer);
 
         // Logo
-        $this->renderLogo($pdf, $company);
+        $this->renderLogo($company);
 
         // Invoice header
-        $this->renderInvoiceHeader($pdf, $bill);
+        $this->renderInvoiceHeader($bill);
 
         // Missions table
-        $this->renderMissionsTable($pdf, $bill);
+        $this->renderMissionsTable($bill);
 
         // Summary and taxes
-        $this->renderSummary($pdf, $bill, $customer);
+        $this->renderSummary($bill, $customer);
 
         // Tax notes
-        $this->renderTaxNotes($pdf, $customer);
+        $this->renderTaxNotes($customer);
 
         // Payment information
-        $this->renderPaymentInfo($pdf, $company, $customer);
+        $this->renderPaymentInfo($company, $customer);
 
         // Save PDF
         $filename = public_path('Rechnungen/' . $company->nameCompany . ' RE-' . $bill->number . '.pdf');
-        $pdf->Output($filename, 'F');
+        PDF::Output($filename, 'F');
 
         return $filename;
     }
@@ -280,90 +280,90 @@ class Bill extends Model
     /**
      * Render address field
      */
-    private function renderAddressField(&$pdf, $company, $customer)
+    private function renderAddressField($company, $customer)
     {
-        $pdf->Ln(20);
-        $pdf->SetFont('helvetica', '', 8);
-        $pdf->SetTextColor(200, 10, 10);
-        $pdf->Cell(0, 0, $company->nameCompany . ' - ' . $company->street . ' - ' . $company->city, 0, 1);
-        $pdf->SetFont('times', '', 12);
-        $pdf->SetTextColor(0, 0, 0);
-        $pdf->Cell(0, 0, $customer->name, 0, 1);
-        $pdf->Cell(0, 0, $customer->street, 0, 1);
-        $pdf->Cell(0, 0, $customer->city, 0, 1);
-        $pdf->Cell(0, 0, $customer->country, 0, 1);
-        $pdf->Cell(0, 0, $customer->steuernr, 0, 1);
+        PDF::Ln(20);
+        PDF::SetFont('helvetica', '', 8);
+        PDF::SetTextColor(200, 10, 10);
+        PDF::Cell(0, 0, $company->nameCompany . ' - ' . $company->street . ' - ' . $company->city, 0, 1);
+        PDF::SetFont('times', '', 12);
+        PDF::SetTextColor(0, 0, 0);
+        PDF::Cell(0, 0, $customer->name, 0, 1);
+        PDF::Cell(0, 0, $customer->street, 0, 1);
+        PDF::Cell(0, 0, $customer->city, 0, 1);
+        PDF::Cell(0, 0, $customer->country, 0, 1);
+        PDF::Cell(0, 0, $customer->steuernr, 0, 1);
     }
 
     /**
      * Render logo
      */
-    private function renderLogo(&$pdf, $company)
+    private function renderLogo($company)
     {
         $imagePath = ($company->id == 2) ? 'images/sh logo.jpg' : 'images/fs logo.jpg';
         if (file_exists($imagePath)) {
-            $pdf->Image($imagePath, 140, 50, 50, '', 'JPG', '', 'R', false, 300);
+            PDF::Image($imagePath, 140, 50, 50, '', 'JPG', '', 'R', false, 300);
         }
     }
 
     /**
      * Render invoice header
      */
-    private function renderInvoiceHeader(&$pdf, $bill)
+    private function renderInvoiceHeader($bill)
     {
-        $pdf->Ln(20);
-        $pdf->Cell(0, 0, 'Mönchengladbach, den ' . $bill->date, 0, 1, 'R');
-        $pdf->Ln(10);
-        $pdf->SetFont('helvetica', 'B', 15);
-        $pdf->Cell(0, 0, 'Rechnungs-Nr.: RE-' . $bill->number, 0, 1);
+        PDF::Ln(20);
+        PDF::Cell(0, 0, 'Mönchengladbach, den ' . $bill->date, 0, 1, 'R');
+        PDF::Ln(10);
+        PDF::SetFont('helvetica', 'B', 15);
+        PDF::Cell(0, 0, 'Rechnungs-Nr.: RE-' . $bill->number, 0, 1);
     }
 
     /**
      * Render missions table
      */
-    private function renderMissionsTable(&$pdf, $bill)
+    private function renderMissionsTable($bill)
     {
-        $pdf->Ln(10);
-        $pdf->SetFont('helvetica', 'B', 10);
-        $pdf->SetFillColor(226, 14, 14);
-        $pdf->Cell(25, 0, 'Tour-Nr.', 1, 0, 'C', 1);
-        $pdf->Cell(25, 0, 'Abholung', 1, 0, 'C', 1);
-        $pdf->Cell(100, 0, 'Tourenbeschreibung', 1, 0, '', 1);
-        $pdf->Cell(20, 0, 'Preis', 1, 1, 'C', 1);
-        $pdf->SetFont('helvetica', '', 10);
-        $pdf->Ln(2);
+        PDF::Ln(10);
+        PDF::SetFont('helvetica', 'B', 10);
+        PDF::SetFillColor(226, 14, 14);
+        PDF::Cell(25, 0, 'Tour-Nr.', 1, 0, 'C', 1);
+        PDF::Cell(25, 0, 'Abholung', 1, 0, 'C', 1);
+        PDF::Cell(100, 0, 'Tourenbeschreibung', 1, 0, '', 1);
+        PDF::Cell(20, 0, 'Preis', 1, 1, 'C', 1);
+        PDF::SetFont('helvetica', '', 10);
+        PDF::Ln(2);
 
         foreach ($bill->missions->sortBy('startDatum') as $mission) {
             if (isset($mission->kundeBemerkung)) {
-                $pdf->Cell(50, 0, '', 0, 0, 'C');
-                $pdf->Cell(100, 0, $mission->kundeBemerkung, 0, 1, 'L');
+                PDF::Cell(50, 0, '', 0, 0, 'C');
+                PDF::Cell(100, 0, $mission->kundeBemerkung, 0, 1, 'L');
             }
-            $pdf->Cell(25, 0, $mission->id, 0, 0, 'C');
-            $pdf->Cell(25, 0, date('d.m.Y', strtotime($mission->startDatum)), 0, 0, 'C');
-            $pdf->Cell(100, 0, 'Abholung: ' . $mission->startOrt, 0, 0, 'L');
-            $pdf->Cell(22, 0, number_format($mission->preisKunde, 2, ',', '') . ' €', 0, 1, 'R');
-            $pdf->Cell(50, 0, '', 0, 0, 'C');
-            $pdf->Cell(100, 0, 'Auslieferung: ' . $mission->zielOrt, 0, 1, 'L');
-            $pdf->Ln(5);
+            PDF::Cell(25, 0, $mission->id, 0, 0, 'C');
+            PDF::Cell(25, 0, date('d.m.Y', strtotime($mission->startDatum)), 0, 0, 'C');
+            PDF::Cell(100, 0, 'Abholung: ' . $mission->startOrt, 0, 0, 'L');
+            PDF::Cell(22, 0, number_format($mission->preisKunde, 2, ',', '') . ' €', 0, 1, 'R');
+            PDF::Cell(50, 0, '', 0, 0, 'C');
+            PDF::Cell(100, 0, 'Auslieferung: ' . $mission->zielOrt, 0, 1, 'L');
+            PDF::Ln(5);
         }
-        $pdf->writeHTML('<hr>');
+        PDF::writeHTML('<hr>');
     }
 
     /**
      * Render summary and tax information
      */
-    private function renderSummary(&$pdf, $bill, $customer)
+    private function renderSummary($bill, $customer)
     {
-        $pdf->Cell(50, 0, '', 0, 0);
-        $pdf->Cell(100, 0, 'Summe (netto)', 0, 0, 'R');
-        $pdf->Cell(22, 0, number_format($bill->priceNet, 2, ',', '') . ' €', 0, 1, 'R');
-        $pdf->Cell(50, 0, '', 0, 0);
-        $pdf->Cell(100, 0, $customer->taxes . '% Mehrwertsteuer', 0, 0, 'R');
-        $pdf->Cell(22, 0, number_format($bill->priceNet * ($customer->taxes / 100), 2, ',', '') . ' €', 0, 1, 'R');
-        $pdf->SetFont('helvetica', 'b', 10);
-        $pdf->Cell(50, 0, '', 0, 0);
-        $pdf->Cell(100, 0, 'Rechnungsbetrag (brutto)', 0, 0, 'R');
-        $pdf->Cell(22, 0, number_format(($bill->priceNet * (1 + $customer->taxes / 100)), 2, ',', '') . ' €', 0, 1, 'R');
+        PDF::Cell(50, 0, '', 0, 0);
+        PDF::Cell(100, 0, 'Summe (netto)', 0, 0, 'R');
+        PDF::Cell(22, 0, number_format($bill->priceNet, 2, ',', '') . ' €', 0, 1, 'R');
+        PDF::Cell(50, 0, '', 0, 0);
+        PDF::Cell(100, 0, $customer->taxes . '% Mehrwertsteuer', 0, 0, 'R');
+        PDF::Cell(22, 0, number_format($bill->priceNet * ($customer->taxes / 100), 2, ',', '') . ' €', 0, 1, 'R');
+        PDF::SetFont('helvetica', 'b', 10);
+        PDF::Cell(50, 0, '', 0, 0);
+        PDF::Cell(100, 0, 'Rechnungsbetrag (brutto)', 0, 0, 'R');
+        PDF::Cell(22, 0, number_format(($bill->priceNet * (1 + $customer->taxes / 100)), 2, ',', '') . ' €', 0, 1, 'R');
         $bill->priceGross = $bill->priceNet * (1 + $customer->taxes / 100);
         $bill->save();
     }
@@ -371,19 +371,19 @@ class Bill extends Model
     /**
      * Render tax notes
      */
-    private function renderTaxNotes(&$pdf, $customer)
+    private function renderTaxNotes($customer)
     {
         if ($customer->paragraph == 300) {
-            $pdf->writeHTML('<p><hr><h3>HINWEIS</h3><br><br>Übergang der Steuerschuldnerschaft nach §3a UStg grenzüberschreitende Beförderung<hr></p>', true, false, true);
+            PDF::writeHTML('<p><hr><h3>HINWEIS</h3><br><br>Übergang der Steuerschuldnerschaft nach §3a UStg grenzüberschreitende Beförderung<hr></p>', true, false, true);
         } elseif ($customer->paragraph == 305) {
-            $pdf->writeHTML('<p><hr><h3>HINWEIS</h3><br><br>Steuerfrei nach § 4(3) lit. a (aa/bb) UStG grenzüberschreitende Beförderung<hr></p>', true, false, true);
+            PDF::writeHTML('<p><hr><h3>HINWEIS</h3><br><br>Steuerfrei nach § 4(3) lit. a (aa/bb) UStG grenzüberschreitende Beförderung<hr></p>', true, false, true);
         }
     }
 
     /**
      * Render payment information
      */
-    private function renderPaymentInfo(&$pdf, $company, $customer)
+    private function renderPaymentInfo($company, $customer)
     {
         $paymentInfo = '
             <p style="text-align: center; font-size:6; font-weight:normal">
@@ -393,19 +393,19 @@ class Bill extends Model
                 Bank: ' . $company->bank . ' / IBAN: ' . $company->iban . ' / BIC: ' . $company->bic . '
             </p>
         ';
-        $pdf->SetY(-32);
-        $pdf->writeHTML($paymentInfo, true, false, true);
+        PDF::SetY(-32);
+        PDF::writeHTML($paymentInfo, true, false, true);
     }
 
     /**
      * Set header callback
      */
-    private function setHeaderCallback(&$pdf, $company)
+    private function setHeaderCallback($company)
     {
         $headerText = ($company->id == 2) ? 'Sabine Heinrichs Transporte' : 'STRERATH Transporte';
         $yPosition = ($company->id == 2) ? 30 : 15;
 
-        $pdf->SetHeaderCallback(function($pdf) use ($headerText, $yPosition) {
+        PDF::SetHeaderCallback(function($pdf) use ($headerText, $yPosition) {
             $pdf->SetY($yPosition);
             $pdf->SetFont('helvetica', 'b', 20);
             $pdf->SetTextColor(200, 10, 10);
@@ -416,9 +416,9 @@ class Bill extends Model
     /**
      * Set footer callback
      */
-    private function setFooterCallback(&$pdf)
+    private function setFooterCallback()
     {
-        $pdf->SetFooterCallback(function($pdf) {
+        PDF::SetFooterCallback(function($pdf) {
             $pdf->SetY(-15);
             $pdf->SetFont('helvetica', '', 8);
             $pdf->Cell(0, 10, 'Seite ' . $pdf->getAliasNumPage() . '/' . $pdf->getAliasNbPages(), 0, false, 'C');
